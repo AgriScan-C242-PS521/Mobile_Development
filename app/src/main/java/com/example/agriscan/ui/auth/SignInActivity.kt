@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -61,7 +62,10 @@ class SignInActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            showLoading(true)
+
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                showLoading(false)
                 if (task.isSuccessful) {
                     if (binding.cbRememberMe.isChecked) {
                         sharedPreferences.edit()
@@ -115,7 +119,7 @@ class SignInActivity : AppCompatActivity() {
     private fun showForgotPasswordDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Reset Password")
-        builder.setMessage("Masukkan email Anda untuk menerima tautan reset password.")
+        builder.setMessage("Masukkan email Anda dengan benar untuk menerima tautan reset password. Pastikan Anda memasukkan email yang terdaftar dan jangan typo.")
 
         val input = android.widget.EditText(this)
         input.hint = "Email"
@@ -147,26 +151,28 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun sendResetPasswordEmail(email: String) {
-        auth.fetchSignInMethodsForEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val signInMethods = task.result?.signInMethods
-                    if (signInMethods.isNullOrEmpty()) {
-                        Toast.makeText(this, "Email tidak terdaftar di sistem kami.", Toast.LENGTH_LONG).show()
-                    } else {
-                        auth.sendPasswordResetEmail(email)
-                            .addOnCompleteListener { resetTask ->
-                                if (resetTask.isSuccessful) {
-                                    Toast.makeText(this, "Tautan reset password telah dikirim ke email.", Toast.LENGTH_LONG).show()
-                                } else {
-                                    Toast.makeText(this, "Gagal mengirim tautan reset password.", Toast.LENGTH_LONG).show()
-                                }
-                            }
-                    }
+        showLoading(true)
+
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { resetTask ->
+                showLoading(false)
+                if (resetTask.isSuccessful) {
+                    Toast.makeText(this, "Tautan reset password telah dikirim ke email.", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(this, "Terjadi kesalahan. Coba lagi nanti.", Toast.LENGTH_LONG).show()
+                    val exceptionMessage = resetTask.exception?.message
+                    Log.e("ResetPasswordError", "Error: $exceptionMessage")
+                    Toast.makeText(this, "Gagal mengirim tautan reset password. Coba lagi.", Toast.LENGTH_LONG).show()
                 }
             }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.etEmail.isEnabled = !isLoading
+        binding.etPassword.isEnabled = !isLoading
+        binding.btnLogin.isEnabled = !isLoading
+        binding.tvForgotPassword.isEnabled = !isLoading
+        binding.tvSignUp.isEnabled = !isLoading
+        binding.cbRememberMe.isEnabled = !isLoading
+    }
 }

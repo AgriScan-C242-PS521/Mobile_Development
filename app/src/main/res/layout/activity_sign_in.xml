@@ -40,7 +40,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:contentDescription="@string/logo_agriscan"
-            android:src="@drawable/logo_agriscan" />
+            android:src="@drawable/logo" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -57,6 +57,12 @@
             android:minHeight="48dp"
             android:textColor="@color/black"
             android:textColorHint="@android:color/tertiary_text_dark" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etPassword"

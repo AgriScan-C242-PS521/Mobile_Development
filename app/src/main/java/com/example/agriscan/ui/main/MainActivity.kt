@@ -41,9 +41,8 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
         setGreetingMessage()
 
         val plantList = listOf(
-            PlantItem("Singkong", R.drawable.bg_cassava, R.drawable.potato),
+            PlantItem("Jagung", R.drawable.bg_corn, R.drawable.corn),
             PlantItem("Tomat", R.drawable.bg_tomato, R.drawable.tomato),
-            PlantItem("Kopi", R.drawable.bg_coffee, R.drawable.coffee),
             PlantItem("Kentang", R.drawable.bg_potato, R.drawable.potato),
         )
 
@@ -90,6 +89,6 @@ class MainActivity : AppCompatActivity(), MenuAdapter.OnMenuItemClickListener {
             else -> "Selamat Malam"
         }
 
-        binding.tvGreeting.text = "$greeting, \n $displayEmail!"
+        binding.tvGreeting.text = getString(R.string.greeting_message, greeting, displayEmail)
     }
 }
