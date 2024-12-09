@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiConfig {
-    fun getApiService(): ApiService {
+    private fun createRetrofit(baseUrl: String): Retrofit {
         val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
@@ -17,10 +17,21 @@ object ApiConfig {
             .writeTimeout(60, TimeUnit.SECONDS)
             .build()
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-            .create(ApiService::class.java)
+    }
+
+    fun getTomatoApiService(): ApiService {
+        return createRetrofit(BuildConfig.TOMATO_BASE_URL).create(ApiService::class.java)
+    }
+
+    fun getCornApiService(): ApiService {
+        return createRetrofit(BuildConfig.CORN_BASE_URL).create(ApiService::class.java)
+    }
+
+    fun getPotatoApiService(): ApiService {
+        return createRetrofit(BuildConfig.POTATO_BASE_URL).create(ApiService::class.java)
     }
 }

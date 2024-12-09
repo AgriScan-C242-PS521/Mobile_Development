@@ -17,7 +17,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://tomato-app-621472450800.asia-southeast2.run.app/\"")
+        buildConfigField("String", "TOMATO_BASE_URL", "\"https://tomato-app-621472450800.asia-southeast2.run.app/\"")
+        buildConfigField("String", "CORN_BASE_URL", "\"https://jagung-app-621472450800.asia-southeast2.run.app/\"")
+        buildConfigField("String", "POTATO_BASE_URL", "\"https://kentang-app-621472450800.asia-southeast2.run.app/\"")
+        buildConfigField("String", "TOKOPEDIA_URL", "\"https://www.tokopedia.com/\"")
     }
 
     buildTypes {
@@ -27,6 +30,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

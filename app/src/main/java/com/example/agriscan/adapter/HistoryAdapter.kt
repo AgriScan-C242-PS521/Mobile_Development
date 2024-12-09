@@ -29,7 +29,7 @@ class HistoryAdapter(
             tvCondition.text = item.condition
             "Confidence: ${item.confidence}%".also { tvConfidence.text = it }
             "Media: ${item.media}".also { tvMedia.text = it }
-            "Date: ${item.dateTime}".also { tvDate.text = it }
+            "Tanggal: ${item.dateTime}".also { tvDate.text = it }
             Glide.with(ivImage.context)
                 .load(item.imagePath)
                 .placeholder(R.drawable.ic_launcher_background)
@@ -66,6 +66,4 @@ class HistoryAdapter(
 
         dialog.show()
     }
-
 }
-

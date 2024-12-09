@@ -76,4 +76,3 @@ object Utils {
         return File.createTempFile(timeStamp, ".jpg", cacheDir)
     }
 }
-

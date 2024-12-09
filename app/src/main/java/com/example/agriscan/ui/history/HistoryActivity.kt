@@ -1,6 +1,7 @@
 package com.example.agriscan.ui.history
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,10 +36,19 @@ class HistoryActivity : AppCompatActivity() {
     private fun loadHistoryData() {
         lifecycleScope.launch {
             val historyList = db.historyDao().getAll()
-            adapter = HistoryAdapter(historyList) { history ->
-                deleteHistory(history)
+
+            if (historyList.isEmpty()) {
+                binding.tvEmptyHistory.visibility = View.VISIBLE
+                binding.rvHistory.visibility = View.GONE
+            } else {
+                binding.tvEmptyHistory.visibility = View.GONE
+                binding.rvHistory.visibility = View.VISIBLE
+
+                adapter = HistoryAdapter(historyList) { history ->
+                    deleteHistory(history)
+                }
+                binding.rvHistory.adapter = adapter
             }
-            binding.rvHistory.adapter = adapter
         }
     }
 
@@ -46,8 +56,7 @@ class HistoryActivity : AppCompatActivity() {
         lifecycleScope.launch {
             db.historyDao().delete(history)
             Toast.makeText(this@HistoryActivity, "History deleted!", Toast.LENGTH_SHORT).show()
-            loadHistoryData() // Refresh data
+            loadHistoryData()
         }
     }
 }
-

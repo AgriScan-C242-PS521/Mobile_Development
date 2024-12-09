@@ -37,4 +37,7 @@
     <string name="tanggal">Tanggal</string>
     <string name="history_image">History Image</string>
     <string name="delete">Hapus</string>
+    <string name="no_history_available">Belum ada history yang disimpan..</string>
+    <string name="beli_obat">Beli Obat</string>
+    <string name="example_disease_image">Example Disease Image</string>
 </resources>

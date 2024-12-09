@@ -36,13 +36,14 @@ class ScanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityScanBinding
     private var currentImageUri: Uri? = null
+    private var plantName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val plantName = intent.getStringExtra("PLANT_NAME")
+        plantName = intent.getStringExtra("PLANT_NAME")
         binding.tvPredictionTitle.text = getString(R.string.prediksi, plantName)
 
         setupListeners()
@@ -99,8 +100,6 @@ class ScanActivity : AppCompatActivity() {
             Toast.makeText(this, "Lakukan prediksi terlebih dahulu", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -166,7 +165,18 @@ class ScanActivity : AppCompatActivity() {
 
         showLoading(true)
 
-        ApiConfig.getApiService().uploadImage(body).enqueue(object : Callback<ImageUploadResponse> {
+        val apiService = when (plantName?.lowercase(Locale.getDefault())) {
+            "tomat" -> ApiConfig.getTomatoApiService()
+            "jagung" -> ApiConfig.getCornApiService()
+            "kentang" -> ApiConfig.getPotatoApiService()
+            else -> {
+                showLoading(false)
+                Toast.makeText(this, "Tumbuhan tidak dikenali", Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
+
+        apiService.uploadImage(body).enqueue(object : Callback<ImageUploadResponse> {
             override fun onResponse(call: Call<ImageUploadResponse>, response: Response<ImageUploadResponse>) {
                 showLoading(false)
 
@@ -177,7 +187,7 @@ class ScanActivity : AppCompatActivity() {
                         binding.tvPredictionConfidence.text = String.format(
                             Locale.US, "%.2f%%", result.confidence * 100
                         )
-                        Toast.makeText(this@ScanActivity, "Upload Berhasil!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ScanActivity, "Prediksi untuk $plantName berhasil!", Toast.LENGTH_SHORT).show()
                     } else {
                         binding.tvPredictionResult.text = getString(R.string.no_result)
                         binding.tvPredictionConfidence.text = ""
@@ -190,7 +200,6 @@ class ScanActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ImageUploadResponse>, t: Throwable) {
                 showLoading(false)
-
                 Toast.makeText(this@ScanActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

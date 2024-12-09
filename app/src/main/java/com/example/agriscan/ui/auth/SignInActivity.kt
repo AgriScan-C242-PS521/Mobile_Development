@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
@@ -44,21 +43,23 @@ class SignInActivity : AppCompatActivity() {
             binding.etPassword.setText(passwordFromSignUp)
             Toast.makeText(
                 this,
-                "Account created successfully. Please sign in.",
+                "Akun berhasil ditambahkan",
                 Toast.LENGTH_SHORT
             ).show()
         }
 
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
             if (email.isEmpty()) {
-                binding.etEmail.error = "Email is required"
+                binding.etEmail.error = "Email tidak boleh kosong"
+                binding.etEmail.requestFocus()
                 return@setOnClickListener
             }
             if (password.isEmpty()) {
-                binding.etPassword.error = "Password is required"
+                binding.etPassword.error = "Password tidak boleh kosong"
+                binding.etPassword.requestFocus()
                 return@setOnClickListener
             }
 
@@ -75,8 +76,8 @@ class SignInActivity : AppCompatActivity() {
                     goToMainActivity()
                 } else {
                     val errorMessage = when {
-                        task.exception?.message?.contains("There is no user record") == true -> "Email is not registered"
-                        task.exception?.message?.contains("The password is invalid") == true -> "Incorrect password"
+                        task.exception?.message?.contains("The supplied auth credential is incorrect, malformed or has expired") == true -> "Akun tidak terdaftar"
+
                         else -> task.exception.toString()
                     }
                     Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
@@ -106,7 +107,7 @@ class SignInActivity : AppCompatActivity() {
         val password = ObjectAnimator.ofFloat(binding.etPassword, View.ALPHA, 1f).setDuration(200)
         val rememberMe = ObjectAnimator.ofFloat(binding.cbRememberMe, View.ALPHA, 1f).setDuration(200)
         val forgotPassword = ObjectAnimator.ofFloat(binding.tvForgotPassword, View.ALPHA, 1f).setDuration(200)
-        val login = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(200)
+        val login = ObjectAnimator.ofFloat(binding.btnSignUp, View.ALPHA, 1f).setDuration(200)
         val signUp = ObjectAnimator.ofFloat(binding.tvSignUp, View.ALPHA, 1f).setDuration(200)
 
 
@@ -159,8 +160,6 @@ class SignInActivity : AppCompatActivity() {
                 if (resetTask.isSuccessful) {
                     Toast.makeText(this, "Tautan reset password telah dikirim ke email.", Toast.LENGTH_LONG).show()
                 } else {
-                    val exceptionMessage = resetTask.exception?.message
-                    Log.e("ResetPasswordError", "Error: $exceptionMessage")
                     Toast.makeText(this, "Gagal mengirim tautan reset password. Coba lagi.", Toast.LENGTH_LONG).show()
                 }
             }
@@ -170,7 +169,7 @@ class SignInActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.etEmail.isEnabled = !isLoading
         binding.etPassword.isEnabled = !isLoading
-        binding.btnLogin.isEnabled = !isLoading
+        binding.btnSignUp.isEnabled = !isLoading
         binding.tvForgotPassword.isEnabled = !isLoading
         binding.tvSignUp.isEnabled = !isLoading
         binding.cbRememberMe.isEnabled = !isLoading
