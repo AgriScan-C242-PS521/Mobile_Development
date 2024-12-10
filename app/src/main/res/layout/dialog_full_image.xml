@@ -15,4 +15,3 @@
         android:scaleType="fitCenter"
         tools:ignore="ImageContrastCheck" />
 </LinearLayout>
-

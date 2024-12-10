@@ -19,8 +19,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="8dp"
             android:alpha="0.6"
-            android:contentDescription="@string/plant_icon"
-            android:src="@drawable/cassava" />
+            android:contentDescription="@string/plant_icon" />
 
         <TextView
             android:id="@+id/tvPlant"

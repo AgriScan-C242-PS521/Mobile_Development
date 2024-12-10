@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,15 +16,13 @@
             android:id="@+id/tvPlantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            android:textStyle="bold" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpDiseases"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
-
