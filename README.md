@@ -53,6 +53,13 @@ AgriScan is a mobile application developed as part of the Bangkit 2024 Capstone 
 
 ---
 
+## DOWNLOAD OUR APPS
+Download the latest version of AgriScan from the link below:
+
+[Download AgriScan App](https://github.com/username/repository/releases/tag/v1.0.0)
+
+---
+
 ## SCREENSHOT
 ![WhatsApp Image 2024-12-11 at 09 52 58](https://github.com/user-attachments/assets/1ea50af1-e852-4821-a376-4334ed53174f) 
 ![WhatsApp Image 2024-12-11 at 09 52 58 (1)](https://github.com/user-attachments/assets/63c81a26-0507-4724-9c83-649f63269183)
